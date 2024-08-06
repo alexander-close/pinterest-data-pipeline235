@@ -57,6 +57,7 @@ def run_infinite_post_data_loop():
             
             for row in pin_selected_row:
                 pin_result = dict(row._mapping)
+                pin_result = {key: convert_datetime(val) for key,val in pin_result.items()}
                 pin_payload = json.dumps({
                     # json data needs to follow this structure
                     "records": [
@@ -139,10 +140,6 @@ def run_infinite_post_data_loop():
                     user_response.status_code
                  ]
                 )
-
-            # print(pin_result)
-            # print(geo_result)
-            # print(user_result)
 
 
 if __name__ == "__main__":
