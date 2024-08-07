@@ -60,3 +60,10 @@ My goal is to modify these to send the data for consumtion by Kafka via the REST
 
 Important to note that, because the SQL query result (now converted to dict type) is put in a requests payload using the json.dumps() method, I neeeded to convert any datetime entries to a JSON-serialisable format first.  This was so I could just read the dictionary into the value key of the json.dumps() method.  Otherwise I would need to put in all the entries one by one.  My method is neater than this and handles futuree changes to the column values.  (Datetime format data only appeears in 'geo' and 'user' data, but the conversion is included for all three sources for consistency and to guard against future inclusion in the 'pin' source.)
 
+Mounting the S3 bucket in Databricks
+After importing the credentials (access and secret access keys) I mount the S3 bucket under a mount called <UserId>-mount.  My bucket file system is there as expected when running display(dbutils.fs.ls("/mnt/126ca3664fbb-mount/")).  Reading in the data as a dataframe goes according to plan.  Thy are titled df_pin, etc.
+
+The code for this is stored in the mounting_notebook.ipynb file.
+
+
+
