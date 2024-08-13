@@ -63,7 +63,9 @@ Important to note that, because the SQL query result (now converted to dict type
 Mounting the S3 bucket in Databricks
 After importing the credentials (access and secret access keys) I mount the S3 bucket under a mount called <UserId>-mount.  My bucket file system is there as expected when running display(dbutils.fs.ls("/mnt/126ca3664fbb-mount/")).  Reading in the data as a dataframe goes according to plan.  Thy are titled df_pin, etc.
 
-The code for this is stored in the mounting_notebook.ipynb file.
+The code for this is stored in the 'Mount & clean' Databricks notebook.
 
+Cleaning, transforming & querying
+In the same notebook there is which extracts the data into three dataframes for pin, geo and user data.  There follows some code to clean the data (removing nulls, converting strings into ints and datetimes, tidying the filepaths) and to transform he column order of the dataframes.
 
-
+After this is down, various scripts are given to query the data in pyspark code and return the output into dataframe format.  These are all successful.
