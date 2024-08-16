@@ -68,9 +68,8 @@ def run_infinite_post_data_loop():
                 pin_payload = json.dumps({
                     # "StreamName": "streaming-126ca3664fbb-pin",
                     # Kinesis json structure
-                    "Data": {                 # not "record" as w/ Kafka
-                          "index": pin_result # not "value" as w/ Kakfa
-                          },
+                    "Data": pin_result,
+                    # not "record": {"index": pin_result} as w/ Kafka
                     "PartitionKey": "partition-1"
                 })
             headers = {'Content-Type': 'application/json'}  # not /vnd.kafka.json.v2+json   
@@ -91,9 +90,8 @@ def run_infinite_post_data_loop():
                 geo_payload = json.dumps({
                     # "StreamName": "streaming-126ca3664fbb-geo",
                     # Kinesis json structure
-                    "Data": {                 # not "record" as w/ Kafka
-                          "index": geo_result # not "value" as w/ Kakfa
-                          },
+                    "Data": geo_result,
+                    # not "record": {"index": geo_result} as w/ Kafka
                     "PartitionKey": "partition-1"
                 })
             headers = {'Content-Type': 'application/json'}  # not /vnd.kafka.json.v2+json  
@@ -114,9 +112,8 @@ def run_infinite_post_data_loop():
                 user_payload = json.dumps({
                     # "StreamName": "streaming-126ca3664fbb-user",
                     # Kinesis json structure
-                    "Data": {                 # not "record" as w/ Kafka
-                          "index": user_result # not "value" as w/ Kakfa
-                          },
+                    "Data": user_result,
+                    # not "record": {"index": user_result} as w/ Kafka
                     "PartitionKey": "partition-1" 
                 })
             headers = {'Content-Type': 'application/json'}  # not /vnd.kafka.json.v2+json
