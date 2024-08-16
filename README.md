@@ -17,6 +17,7 @@ Building a data pipeline from scratch for Pinterest-generated data.
 - Cleaning, transforming & querying
 - AWS MWAA
 - Kinesis setup
+- Kinesis & Databricks
 
 
 
@@ -106,4 +107,6 @@ The methods are configured so that `{stream-name}` in the invoke URL is replaced
 
 A test request is contained in the file `test_stream_post.py`.  The status response code is 200! -- However, I cannot see the data recorded in the Kinesis data viewer...
 
-To similate incoming user posting data, a new file `user_posting_emulation_streaming.py` is created, which is a modification of the `user_posting_emulation.py` adapted for Kinesis and to interact with the `stream/{stream-name}/record` PUT method.  The code appears to be successful (200 response codes) but again I cannot see any records on the data viewer.
+To similate incoming user posting data, a new file `user_posting_emulation_streaming.py` is created, which is a modification of the `user_posting_emulation.py` adapted for Kinesis and to interact with the `stream/{stream-name}/record` PUT method.  ~~The code appears to be successful (200 response codes) but again I cannot see any records on the data viewer.~~  Working.  Potential issues were:  Kinesis itself (janky to see records - need to select `from timestamp`); and `Content-Type` header should be `application/json`, not the `x.amz` one.
+
+Kinesis & Databricks

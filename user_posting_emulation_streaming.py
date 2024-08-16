@@ -21,14 +21,14 @@ def convert_datetime(obj):
         return obj.isoformat() # converts if datetime
     return obj                 # else passes
 
-random.seed(100)
+random.seed(42)
 
 # to open external credentials
 with open('db_creds.yaml','r') as f:
     creds = yaml.safe_load(f)
 
 # streaming URL for single record PUT
-invoke_url='https://foyd3wyk4c.execute-api.us-east-1.amazonaws.com/dev/streams/{stream-name}/record'
+invoke_url='https://foyd3wyk4c.execute-api.us-east-1.amazonaws.com/dev/streams/streaming-126ca3664fbb-{}/record'
 
 class AWSDBConnector:
 
@@ -66,21 +66,21 @@ def run_infinite_post_data_loop():
                 pin_result = dict(row._mapping)
                 pin_result = {key: convert_datetime(val) for key,val in pin_result.items()}
                 pin_payload = json.dumps({
-                    "StreamName": "streaming-126ca3664fbb-pin",
+                    # "StreamName": "streaming-126ca3664fbb-pin",
                     # Kinesis json structure
                     "Data": {                 # not "record" as w/ Kafka
                           "index": pin_result # not "value" as w/ Kakfa
                           },
-                    "PartitionKey": "partition-pin" # new value
+                    "PartitionKey": "partition-1"
                 })
             headers = {'Content-Type': 'application/json'}  # not /vnd.kafka.json.v2+json   
             pin_response = requests.request("PUT",
-                                        invoke_url,
+                                        invoke_url.format('pin'),
                                         headers=headers,
                                         data=pin_payload
                                         )
             
-            # sending geo data to the .geo topic
+            # sending geo data to the .geo stream
 
             geo_string = text(f"SELECT * FROM geolocation_data LIMIT {random_row}, 1")
             geo_selected_row = connection.execute(geo_string)
@@ -89,21 +89,21 @@ def run_infinite_post_data_loop():
                 geo_result = dict(row._mapping)
                 geo_result = {key: convert_datetime(val) for key,val in geo_result.items()}
                 geo_payload = json.dumps({
-                    "StreamName": "streaming-126ca3664fbb-geo",
+                    # "StreamName": "streaming-126ca3664fbb-geo",
                     # Kinesis json structure
                     "Data": {                 # not "record" as w/ Kafka
                           "index": geo_result # not "value" as w/ Kakfa
                           },
-                    "PartitionKey": "partition-geo" # new value
+                    "PartitionKey": "partition-1"
                 })
             headers = {'Content-Type': 'application/json'}  # not /vnd.kafka.json.v2+json  
             geo_response = requests.request("PUT",
-                                        invoke_url,
+                                        invoke_url.format('geo'),
                                         headers=headers,
                                         data=geo_payload
                                         )
             
-            # sending user data to the .user topic
+            # sending user data to the .user stream
 
             user_string = text(f"SELECT * FROM user_data LIMIT {random_row}, 1")
             user_selected_row = connection.execute(user_string)
@@ -112,16 +112,16 @@ def run_infinite_post_data_loop():
                 user_result = dict(row._mapping)
                 user_result = {key: convert_datetime(val) for key,val in user_result.items()}
                 user_payload = json.dumps({
-                    "StreamName": "streaming-126ca3664fbb-geo",
+                    # "StreamName": "streaming-126ca3664fbb-user",
                     # Kinesis json structure
                     "Data": {                 # not "record" as w/ Kafka
-                          "index": geo_result # not "value" as w/ Kakfa
+                          "index": user_result # not "value" as w/ Kakfa
                           },
-                    "PartitionKey": "partition-geo" # new value
+                    "PartitionKey": "partition-1" 
                 })
             headers = {'Content-Type': 'application/json'}  # not /vnd.kafka.json.v2+json
             user_response = requests.request("PUT",
-                                        invoke_url,
+                                        invoke_url.format('user'),
                                         headers=headers,
                                         data=user_payload
                                         )
