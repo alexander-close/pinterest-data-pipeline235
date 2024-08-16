@@ -110,3 +110,10 @@ A test request is contained in the file `test_stream_post.py`.  The status respo
 To similate incoming user posting data, a new file `user_posting_emulation_streaming.py` is created, which is a modification of the `user_posting_emulation.py` adapted for Kinesis and to interact with the `stream/{stream-name}/record` PUT method.  ~~The code appears to be successful (200 response codes) but again I cannot see any records on the data viewer.~~  Working.  Potential issues were:  Kinesis itself (janky to see records - need to select `from timestamp`); and `Content-Type` header should be `application/json`, not the `x.amz` one.
 
 Kinesis & Databricks
+In Databricks a new notebook 'Kinesis streaming' (exported and added to Git repo as `kinesis_streaming.ipynb`) is initiated.  In the same vain of the S3 bucket mounting, the access and secret access keys are read from the credentials file.  When the emulator is running, the stream data are read into three DataFrames, which will update with new row entries as long as the cell remains uninterrupted.  To see the data properly the `data` field needs to be decoded (from base64?).
+
+I copy my cleaning/transoforming code from the other notebook and bung it in one cell of this streaming notebook.
+
+As of right now I cannot check if the transformtions work properly on df_pin because there is a stray data entry at the very start corresponding to a test payload I sent when first trying out the stream.  My functions will not work on it as this item doesn't follow the expected schema.  Rather than try to remove this datum I will just wait for the stream data to flush (after 24 hours) and run the streeam & notebook then.
+
+And waiting again because emulator was accidentally sending `"Data": {"index": <data>}` as payload instead of `"Data": <data>`!
