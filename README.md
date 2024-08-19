@@ -1,7 +1,15 @@
 # Project: Pinterest Database Pipeline
 
 ### Description
-Building a data pipeline from scratch for Pinterest-generated data.  There is no licesing information.
+Building a data pipeline from scratch for Pinterest-generated data.  The project involves writing a 
+scripts that pull Pinterest-like data from a remote database and emulates real-time posting data by producing a 
+loop of random samples. These are then processed either in a batch or streaming type method and ingested 
+and stored using different AWS-integrated methods.  Batch or real-time cleaning/transformation/inspection 
+can then be performed on the incoming data using Spark.
+
+This README file serves as a personal procedural log of how the project was built in a linear fashion.
+
+There is no licesing information.
 
 ### Table of Contents
 
