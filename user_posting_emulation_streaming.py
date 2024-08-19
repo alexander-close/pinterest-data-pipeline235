@@ -1,5 +1,5 @@
 #########################################################
-# # Code modified from useer_posting_emulation.py
+# # Code modified from user_posting_emulation.py
 # Requests changed from POSTs to PUTs
 # API now interacts with Kinesis rather than Kafka
 #########################################################
