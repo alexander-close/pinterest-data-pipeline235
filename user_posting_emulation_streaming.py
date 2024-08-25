@@ -23,12 +23,15 @@ def convert_datetime(obj):
 
 random.seed(42)
 
-# to open external credentials
+# to open externally stored info
 with open('db_creds.yaml','r') as f:
     creds = yaml.safe_load(f)
+with open('constants.yaml','r') as t:
+    consts = yaml.safe_load(t)
+
+INVOKE_URL = consts['INVOKE_URL']
 
 # streaming URL for single record PUT
-invoke_url='https://foyd3wyk4c.execute-api.us-east-1.amazonaws.com/dev/streams/streaming-126ca3664fbb-{}/record'
 
 class AWSDBConnector:
 
@@ -66,7 +69,6 @@ def run_infinite_post_data_loop():
                 pin_result = dict(row._mapping)
                 pin_result = {key: convert_datetime(val) for key,val in pin_result.items()}
                 pin_payload = json.dumps({
-                    # "StreamName": "streaming-126ca3664fbb-pin",
                     # Kinesis json structure
                     "Data": pin_result,
                     # not "record": {"index": pin_result} as w/ Kafka
@@ -74,7 +76,7 @@ def run_infinite_post_data_loop():
                 })
             headers = {'Content-Type': 'application/json'}  # not /vnd.kafka.json.v2+json   
             pin_response = requests.request("PUT",
-                                        invoke_url.format('pin'),
+                                        INVOKE_URL.format('pin'),
                                         headers=headers,
                                         data=pin_payload
                                         )
@@ -88,7 +90,6 @@ def run_infinite_post_data_loop():
                 geo_result = dict(row._mapping)
                 geo_result = {key: convert_datetime(val) for key,val in geo_result.items()}
                 geo_payload = json.dumps({
-                    # "StreamName": "streaming-126ca3664fbb-geo",
                     # Kinesis json structure
                     "Data": geo_result,
                     # not "record": {"index": geo_result} as w/ Kafka
@@ -96,7 +97,7 @@ def run_infinite_post_data_loop():
                 })
             headers = {'Content-Type': 'application/json'}  # not /vnd.kafka.json.v2+json  
             geo_response = requests.request("PUT",
-                                        invoke_url.format('geo'),
+                                        INVOKE_URL.format('geo'),
                                         headers=headers,
                                         data=geo_payload
                                         )
@@ -110,7 +111,6 @@ def run_infinite_post_data_loop():
                 user_result = dict(row._mapping)
                 user_result = {key: convert_datetime(val) for key,val in user_result.items()}
                 user_payload = json.dumps({
-                    # "StreamName": "streaming-126ca3664fbb-user",
                     # Kinesis json structure
                     "Data": user_result,
                     # not "record": {"index": user_result} as w/ Kafka
@@ -118,7 +118,7 @@ def run_infinite_post_data_loop():
                 })
             headers = {'Content-Type': 'application/json'}  # not /vnd.kafka.json.v2+json
             user_response = requests.request("PUT",
-                                        invoke_url.format('user'),
+                                        INVOKE_URL.format('user'),
                                         headers=headers,
                                         data=user_payload
                                         )
@@ -136,26 +136,3 @@ def run_infinite_post_data_loop():
 if __name__ == "__main__":
     print('Post stream ongoing...')
     run_infinite_post_data_loop()
-
-if __name__ == "__mai__":
-    invoke_url = "https://foyd3wyk4c.execute-api.us-east-1.amazonaws.com/dev"
-    example_df = {"index": 1, "name": "Maya", "age": 25, "role": "engineer"}
-
-    # invoke_url = "https://YourAPIInvokeURL/YourDeploymentStage/topics/YourTopicName"
-    #To send JSON messages you need to follow this structure
-    payload = json.dumps({
-        "records": [
-            {
-            #Data should be send as pairs of column_name:value, with different columns separated by commas       
-            "value": {"index": example_df["index"], "role": example_df["role"]}
-            }
-        ]
-    })
-
-    headers = {'Content-Type': 'application/vnd.kafka.json.v2+json'}
-    response = requests.request("POST",
-                                invoke_url+'/topics/126ca3664fbb.pin',
-                                headers=headers,
-                                data=payload)
-    print(response.status_code)
-
