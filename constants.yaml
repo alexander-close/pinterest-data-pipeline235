@@ -1,4 +1,4 @@
 ---
 USER_ID: '126ca3664bb'
-STREAM_INVOKE_URL: 'https://foyd3wyk4c.execute-api.us-east-1.amazonaws.com/dev/streams/streaming-126ca3664fbb-{}/record'
-PROXY_INVOKE_URL: 'https://foyd3wyk4c.execute-api.us-east-1.amazonaws.com/dev'
+KINESIS_URL: 'https://foyd3wyk4c.execute-api.us-east-1.amazonaws.com/dev/streams/streaming-126ca3664fbb-{}/record'
+KAFKA_URL: 'https://foyd3wyk4c.execute-api.us-east-1.amazonaws.com/dev/topics/126ca3664bb'
