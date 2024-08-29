@@ -3,9 +3,7 @@ from time import sleep
 from typing import Callable
 from utils import AWSDBConnector, generate_post, send_to_kafka, send_to_kinesis
 
-
 new_connector = AWSDBConnector()
-
 
 def run_infinite_post_data_loop(
     send_to_stream:Callable,
