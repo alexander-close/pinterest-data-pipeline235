@@ -1,7 +1,8 @@
+import AWSDBConnector
 import random
 from time import sleep
 from typing import Callable
-from utils import AWSDBConnector, generate_post, send_to_kafka, send_to_kinesis
+from utils import generate_post, send_to_kafka, send_to_kinesis
 
 new_connector = AWSDBConnector()
 
@@ -46,5 +47,7 @@ def run_infinite_post_data_loop(
 if __name__ == "__main__":
     print('User post stream ongoing...')
     run_infinite_post_data_loop(
-        send_to_kafka # or send_to_kinesis
+        # COMMENT OUT AS NEEDED
+        send_to_kafka
+        # send_to_kinesis
     )

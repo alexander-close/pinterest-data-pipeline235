@@ -1,12 +1,10 @@
 import json
 import requests
-import sqlalchemy
 import yaml
 
 from datetime import datetime
 from requests import Response
 from sqlalchemy import text
-from sqlalchemy.engine import Engine
 
 
 def convert_datetime(obj):
@@ -54,12 +52,12 @@ def generate_post(table_key:str, row_number:int, connection)->dict:
 def send_to_kafka(
         new_post:dict,
         topic:str,
-        invoke_url:str=YAMLReader('constants')['KAFKA_URL']
+        invoke_url:str=YAMLReader('config')['KAFKA_URL']
 )->str:
     '''
     Sends posting data to Apache Kafka for processing using a provided
     invoke URL and topic name.  By default, it will look for a `.yaml`
-    file `constants` in which the invoke URL is stored as 'KAFKA_URL'.
+    file `config` in which the invoke URL is stored as 'KAFKA_URL'.
     '''
 
     def create_kafka_payload(dict_post)->Response:
@@ -91,15 +89,15 @@ def send_to_kafka(
 def send_to_kinesis(
         new_post:dict,
         partition_key:str,
-        invoke_url:str=YAMLReader('constants')['KINESIS_URL']
+        invoke_url:str=YAMLReader('config')['KINESIS_URL']
 )->str:
     '''
     Sends posting data to AWS Kkinesis for processing using a provided
     invoke URL and partition key.  By default, it will look for a `.yaml`
-    file `constants` in which the invoke URL is stored as 'KINESIS_URL'.
+    file `config` in which the invoke URL is stored as 'KINESIS_URL'.
 
     Function is set up so that the partition key corresponds to the 'topic',
-    e.g. `geo`.
+    e.g., `geo`.
     '''
     def create_kinesis_payload(dict_post, partition_key)->Response:
         '''
@@ -123,33 +121,3 @@ def send_to_kinesis(
         data = payload
     )
     return response
-
-class AWSDBConnector:
-    '''An object which connects to a remote AWS database.'''
-    def __init__(self):
-        pass
-    
-    def create_db_connector(self, credentials:str='db_creds')->Engine:
-        '''
-        Creates connection engine with given database credentials.  
-        By default, it looks for a `.yaml` file named `db_creds`.
-        '''
-        if '.yaml' in credentials:
-            credentials = credentials.split('.')[0]
-
-        self.HOST = YAMLReader(credentials)['HOST']
-        self.USER = YAMLReader(credentials)['USER']
-        self.PASSWORD = YAMLReader(credentials)['PASSWORD']
-        self.DATABASE = YAMLReader(credentials)['DATABASE']
-        self.PORT = 3306
-
-        engine = sqlalchemy.create_engine(
-            f'mysql+pymysql'
-            f'://{self.USER}'
-            f':{self.PASSWORD}'
-            f'@{self.HOST}'
-            f':{self.PORT}'
-            f'/{self.DATABASE}'
-            '?charset=utf8mb4'
-        )
-        return engine
