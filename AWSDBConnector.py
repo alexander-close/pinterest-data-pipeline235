@@ -16,19 +16,20 @@ class AWSDBConnector:
         if '.yaml' in credentials:
             credentials = credentials.split('.')[0]
 
-        self.HOST = YAMLReader(credentials)['HOST']
-        self.USER = YAMLReader(credentials)['USER']
-        self.PASSWORD = YAMLReader(credentials)['PASSWORD']
-        self.DATABASE = YAMLReader(credentials)['DATABASE']
-        self.PORT = 3306
+        creds = YAMLReader(credentials)
+        HOST = creds['HOST']
+        USER = creds['USER']
+        PASSWORD = creds['PASSWORD']
+        DATABASE = creds['DATABASE']
+        PORT = 3306
 
         engine = sqlalchemy.create_engine(
             f'mysql+pymysql'
-            f'://{self.USER}'
-            f':{self.PASSWORD}'
-            f'@{self.HOST}'
-            f':{self.PORT}'
-            f'/{self.DATABASE}'
+            f'://{USER}'
+            f':{PASSWORD}'
+            f'@{HOST}'
+            f':{PORT}'
+            f'/{DATABASE}'
             '?charset=utf8mb4'
         )
         return engine

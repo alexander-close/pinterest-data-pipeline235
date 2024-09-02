@@ -1,5 +1,5 @@
-import AWSDBConnector
 import random
+from AWSDBConnector import AWSDBConnector
 from time import sleep
 from typing import Callable
 from utils import generate_post, send_to_kafka, send_to_kinesis
@@ -18,13 +18,13 @@ def run_infinite_post_data_loop(
     also specify a list of 'table keys' (defaulted to `[pin,geo,user]` and
     a random seed choice for reproducablity.)
 
-    The infinite loop contains a subloop which iterates of the table keys,
+    The infinite loop contains a subloop which iterates over the table keys,
     generates the respective posting data, packages them into the appropriate
     payload and sends them to the streaming processor.
 
     The loop also prints outs the pre-processed "post" to terminal console.
 
-    * NB: Comment out the response line when not connecting to Kafka/Kinesis. *
+    * NB:  Comment out the response line when not connecting to Kafka/Kinesis. *
     '''
     random.seed(random_seed)
     while True:

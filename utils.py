@@ -31,23 +31,18 @@ def generate_post(table_key:str, row_number:int, connection)->dict:
     is converted into `dict` format and datetimes are transformed to `str`
     so they may be later converted into JSON strings.
     '''
-    # try:
+    table_map = {'pin': 'pinterest', 'geo': 'geolocation', 'user': 'user'}
+
     if table_key not in ['pin','geo','user']:
         raise ValueError(f'`{table_key}` is not a valid table key.')
-    if table_key == 'pin':
-        name = 'pinterest'
-    elif table_key == 'geo':
-        name = 'geolocation'
-    elif table_key == 'user':
-        name = 'user'
+    name = table_map[table_key]
     string = text(f"SELECT * FROM {name}_data LIMIT {row_number}, 1")
     selected_row = connection.execute(string)
     for row in selected_row:
         result = dict(row._mapping)
         result = {key: convert_datetime(val) for key,val in result.items()}
     return result
-    # except ValueError as e:
-    #     print(e)
+
 
 def send_to_kafka(
         new_post:dict,
