@@ -16,9 +16,9 @@ def run_infinite_post_data_loop(
     the user is provide the destination processor in the form of either
     of the functions `send_to_kafka` or `send_to_kinesis`.  The user may
     also specify a list of 'table keys' (defaulted to `[pin,geo,user]` and
-    a random seed choice for reproducablity.)
+    a random seed choice for reproducibility.)
 
-    The infinite loop contains a subloop which iterates over the table keys,
+    The infinite loop contains a sub-loop which iterates over the table keys,
     generates the respective posting data, packages them into the appropriate
     payload and sends them to the streaming processor.
 
