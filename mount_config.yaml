@@ -1,0 +1,3 @@
+---
+USER_ID: '126ca3664bb'
+DELTA_TABLE_PATH: 'dbfs:/user/hive/warehouse/authentication_credentials'
