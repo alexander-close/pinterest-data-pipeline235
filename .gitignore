@@ -5,3 +5,4 @@ creds_from_support
 blairs-comments/
 config.yaml
 __pycache__/
+databricks_jobs/mount_config.yaml
