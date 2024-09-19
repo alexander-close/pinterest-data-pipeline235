@@ -51,27 +51,29 @@ title: EProject RD
 ---
 erDiagram
     "AWS RDB" ||..|| "utils.py" : ""
-    "AWS RDB" ||..||"AWSDBConnector.py" : ""
+    "AWS RDB" ||..|| "AWSDBConnector.py" : ""
     "utils.py" ||--o{ "AWSDBConnector.py" : as
     "utils.py" ||--o{ "user_posting_emulation.py" : ""
     "AWSDBConnector.py" ||--o{ "user_posting_emulation.py" : ""
     "db_creds.yaml" ||--o{ "user_posting_emulation.py" : ""
     "user_posting_emulation.py" ||--o{ "config.yaml" : ""
-    "config.yaml" ||..|{ "AWS API Gateway" : ""
-    "AWS API Gateway" ||..|{ "mount_s3.ipynb" : ""
-    "AWS API Gateway" ||..|{ "mount_config.ipynb" : ""
-    "AWS API Gateway" ||..|{ "functions.ipynb" : ""
+    "config.yaml" |{..|| "AWS API Gateway" : ""
+    "AWS API Gateway" ||..|| "mount_s3.ipynb" : ""
+    "AWS API Gateway" ||..|| "mount_config.ipynb" : ""
+    "AWS API Gateway" ||..|| "functions.ipynb" : ""
     
-    "mount_s3.ipynb" ||..|{ "kafka_query_job.ipynb" : ""
-    "mount_config.yaml" ||..|{ "kafka_query_job.ipynb" : ""
-    "functions.ipynb" ||..|{ "kafka_query_job.ipynb" : ""
-    "mount_s3.ipynb" ||..|{ "kinesis_ETL_job.ipynb" : ""
-    "mount_config.yaml" ||..|{ "kinesis_ETL_job.ipynb" : ""
-    "functions.ipynb" ||..|{ "kinesis_ETL_job.ipynb" : "" 
+    "mount_s3.ipynb" ||--|| "kafka_query_job.ipynb" : ""
+    "mount_config.yaml" ||--|| "kafka_query_job.ipynb" : ""
+    "functions.ipynb" |{--|| "kafka_query_job.ipynb" : ""
+    "mount_s3.ipynb" ||--|| "kinesis_ETL_job.ipynb" : ""
+    "mount_config.yaml" ||--|| "kinesis_ETL_job.ipynb" : ""
+    "functions.ipynb" |{--|| "kinesis_ETL_job.ipynb" : "" 
 
-    "queries.ipynb" }|..|{ "kafka_query_job.ipynb" : ""
-    "schemas.ipynb" ||--|{ "kinesis_ETL_job.ipynb" : ""
-    DAG ||--|{ "kafka_query_job.ipynb" : ""
+    "queries.ipynb" ||--|| "kafka_query_job.ipynb" : ""
+    "schemas.ipynb" ||--|| "kinesis_ETL_job.ipynb" : ""
+    DAG ||..|| "kafka_query_job.ipynb" : ""
+    DAG ||..|| "Apache Airflow" : ""
+    "kinesis_ETL_job.ipynb" |{..|{ "Delta table" : ""
  
 ```
 
